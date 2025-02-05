@@ -1,3 +1,5 @@
+# Python has a built-in os module with methods for interacting with the operating system, like creating files and directories, 
+# management of files and directories, input, output, environment variables, process management, etc.
 import os
 import json
 from flask import Flask, render_template
