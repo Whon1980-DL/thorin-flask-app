@@ -2,10 +2,13 @@
 # management of files and directories, input, output, environment variables, process management, etc.
 import os
 import json
-from flask import Flask, render_template
+from flask import Flask, render_template, request, flash
+if os.path.exists("env.py"):
+    import env
 
 # creating an instance of Flask class and store it in variable called app with the first argument being the name of the applicaiton module - out package
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY")
 
 # this is a decorator and is a way of wrapping funciton. / indicate the root directory. When we try to browse the root directtory Flak will call the function index()
 @app.route("/")
@@ -34,8 +37,15 @@ def about_member(member_name):
     return render_template("member.html", member=member)
 
 
-@app.route("/contact")
+# methods is added as argument in the route method as flask can only hanle get unless we specify post as well
+@app.route("/contact", methods=["GET", "POST"])
 def contact():
+    if request.method == "POST":
+        # can use either get method or square brakets. get throw non if key not present whereas [] throw exception.
+        # print(request.form.get("name"))
+        # print(request.form["email"])
+        flash("Thanks {}, we have received your message!".format(
+            request.form.get("name")))
     return render_template("contact.html", page_title="Contact")
 
 
