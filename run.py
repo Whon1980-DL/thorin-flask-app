@@ -22,6 +22,18 @@ def about():
     return render_template("about.html", page_title="About", company=data)
 
 
+@app.route("/about/<member_name>")
+def about_member(member_name):
+    member = {}
+    with open("data/company.json", "r") as json_data:
+        data = json.load(json_data)
+        for obj in data:
+            if obj["url"] == member_name:
+                member = obj
+    # the first memebr in the argument is the memebr.html and the second one is the member variable member = {} we created above
+    return render_template("member.html", member=member)
+
+
 @app.route("/contact")
 def contact():
     return render_template("contact.html", page_title="Contact")
@@ -35,6 +47,6 @@ def careers():
 if __name__ == "__main__":
     app.run(
         host=os.environ.get("IP", "0.0.0.0"),
-        port=int(os.environ.get("PORT", "5000")),
+        port=int(os.environ.get("PORT", "5002")),
         # do not use debug=True in actual project
         debug=True)
